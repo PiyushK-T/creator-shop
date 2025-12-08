@@ -22,8 +22,11 @@ const Home: React.FC = () => {
     </p>
 
     {/* Buttons */}
-<div className="flex gap-10"> {/* increased gap from 6 to 8 */}
-  <button className="bg-black text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-800 transition transform scale-105">
+<div className="flex gap-10">
+  <button 
+    className="bg-black text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-800 transition transform scale-105"
+    onClick={() => (window.location.href = "/products")}
+  >
     Shop Now
   </button>
   <button className="bg-white border border-gray-300 text-black px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition transform scale-105">

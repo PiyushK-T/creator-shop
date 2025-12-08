@@ -3,20 +3,35 @@ import { FaShoppingCart } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="w-full flex justify-between items-center bg-white shadow-md py-15 px-25">
-      <div className="text-4xl font-bold">Threads & Pixel</div>
-      <div className="flex items-center gap-8">
+    <nav className="w-full bg-white shadow-md h-24 flex items-center px-8">
+
+      {/* Website Name */}
+      <div className="text-3xl font-bold text-black tracking-wide">
+        Threads & Pixels
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex items-center gap-8 ml-auto">
         <a
-          href="/shop"
-          className="text-xl font-semibold text-black hover:text-primary"
+          href="/"
+          className="text-lg font-medium text-black hover:text-blue-500 transition"
         >
-          SHOP
+          Home
         </a>
+
+        <a
+          href="/products"
+          className="text-lg font-medium text-black hover:text-blue-500 transition"
+        >
+          Products
+        </a>
+
         <FaShoppingCart
-          size={40}
-          className="cursor-pointer text-black hover:text-primary"
+          size={30}
+          className="cursor-pointer text-black hover:text-blue-500 transition"
         />
       </div>
+
     </nav>
   );
 };
