@@ -1,35 +1,36 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import products from "../data/products";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
+import { useCart } from "../context/useCart";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const product = products.find((p) => p.id === Number(id));
   const [qty, setQty] = useState(1);
+  const { addToCart } = useCart();
 
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        {/* <Navbar /> */}
         <main className="flex-grow flex justify-center items-center">
           <p className="text-xl text-red-600">Product not found!</p>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* MAIN CONTENT */}
       <main className="flex-grow flex w-full mt-20">
-        {/* Image Section (70%) */}
+        {/* Image Section */}
         <div className="w-[70%] h-[650px] flex justify-center items-center">
-          {/* Actual Image with side spacing */}
           <div className="w-[80%] h-full">
             <img
               src={product.image}
@@ -39,7 +40,6 @@ const ProductPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Text Section (30%) with right padding */}
         <div className="w-[30%] h-[500px] flex flex-col gap-6 py-4 pr-6">
           <h2 className="text-4xl font-bold text-black">{product.name}</h2>
 
@@ -71,9 +71,21 @@ const ProductPage: React.FC = () => {
             </button>
           </div>
 
-          <button className="mt-4 px-6 py-2 bg-black text-white rounded-lg w-fit hover:bg-gray-900 transition">
+          <button
+            onClick={() =>
+              addToCart({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                quantity: qty,
+              })
+            }
+            className="mt-4 px-6 py-2 bg-black text-white rounded-lg w-fit hover:bg-gray-900 transition"
+          >
             ADD TO CART
           </button>
+
 
           <p className="text-gray-600 text-sm mt-4">
             SHIPPING INFO — Ships within 3–5 business days.
@@ -81,7 +93,7 @@ const ProductPage: React.FC = () => {
         </div>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
