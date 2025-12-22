@@ -39,16 +39,18 @@ const Navbar: React.FC = () => {
 
         {/* Cart */}
         <div className="relative cursor-pointer">
-          <FaShoppingCart
-            size={30}
-            className="text-black hover:text-blue-500 transition"
-          />
+          <Link to="/cart" className="relative">
+            <FaShoppingCart
+              size={30}
+              className="text-black hover:text-blue-500 transition"
+            />
 
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-              {cartCount}
-            </span>
-          )}
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-black text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                {cartCount}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
     </nav>

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import products from "../data/products";
-// import Navbar from "../components/Navbar";
-// import Footer from "../components/Footer";
 import { useCart } from "../context/useCart";
 
 const ProductPage: React.FC = () => {
@@ -14,18 +12,15 @@ const ProductPage: React.FC = () => {
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
-        {/* <Navbar /> */}
         <main className="flex-grow flex justify-center items-center">
           <p className="text-xl text-red-600">Product not found!</p>
         </main>
-        {/* <Footer /> */}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* <Navbar /> */}
+    <div className="max-h-screen flex flex-col">
 
       {/* MAIN CONTENT */}
       <main className="flex-grow flex w-full mt-20">
@@ -92,8 +87,6 @@ const ProductPage: React.FC = () => {
           </p>
         </div>
       </main>
-
-      {/* <Footer /> */}
     </div>
   );
 };
