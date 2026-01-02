@@ -2,26 +2,36 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import products from "../data/products";
 import { useCart } from "../context/useCart";
+import { useToast } from "../context/ToastContext";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const product = products.find((p) => p.id === Number(id));
   const [qty, setQty] = useState(1);
   const { addToCart } = useCart();
+  const { showToast } = useToast();
 
   if (!product) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <main className="flex-grow flex justify-center items-center">
-          <p className="text-xl text-red-600">Product not found!</p>
-        </main>
+      <div className="max-h-screen flex flex-col items-center justify-center">
+        <p className="text-xl text-red-600">Product not found!</p>
       </div>
     );
   }
 
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: qty,
+    });
+    showToast(`${product.name} added to cart!`);
+  };
+
   return (
     <div className="max-h-screen flex flex-col">
-
       {/* MAIN CONTENT */}
       <main className="flex-grow flex w-full mt-20">
         {/* Image Section */}
@@ -51,7 +61,7 @@ const ProductPage: React.FC = () => {
             <span className="font-semibold text-black">Quantity:</span>
             <button
               onClick={() => qty > 1 && setQty(qty - 1)}
-              className="px-3 py-1 bg-gray-700 rounded-full text-lg"
+              className="px-3 py-1 bg-gray-700 rounded-full text-white text-lg"
             >
               –
             </button>
@@ -60,28 +70,21 @@ const ProductPage: React.FC = () => {
             </div>
             <button
               onClick={() => setQty(qty + 1)}
-              className="px-3 py-1 bg-gray-700 rounded-full text-lg"
+              className="px-3 py-1 bg-gray-700 rounded-full text-white text-lg"
             >
               +
             </button>
           </div>
 
+          {/* ADD TO CART */}
           <button
-            onClick={() =>
-              addToCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                quantity: qty,
-              })
-            }
+            onClick={handleAddToCart}
             className="mt-4 px-6 py-2 bg-black text-white rounded-lg w-fit hover:bg-gray-900 transition"
           >
             ADD TO CART
           </button>
 
-
+          {/* SHIPPING INFO */}
           <p className="text-gray-600 text-sm mt-4">
             SHIPPING INFO — Ships within 3–5 business days.
           </p>

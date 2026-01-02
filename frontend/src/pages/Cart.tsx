@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useCart } from "../context/useCart";
+import { useToast } from "../context/ToastContext";
 import ConfirmModal from "../components/ConfirmModal";
+import { useNavigate } from "react-router-dom";
 
 const Cart: React.FC = () => {
   const { cart, addToCart, removeFromCart, clearCart } = useCart();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"remove" | "clear" | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -36,8 +41,10 @@ const Cart: React.FC = () => {
   const handleConfirm = () => {
     if (modalType === "remove" && selectedId !== null) {
       removeFromCart(selectedId);
+      showToast("Item removed from cart"); // toast for remove
     } else if (modalType === "clear") {
       clearCart();
+      showToast("Cart cleared"); // toast for clear
     }
     closeModal();
   };
@@ -127,8 +134,8 @@ const Cart: React.FC = () => {
         <div className="flex items-center gap-4">
           <span className="text-2xl font-bold text-gray-800">Total: ${totalPrice}</span>
           <button
-            onClick={() => alert("Proceeding to checkout...")}
-            className="px-6 py-2 bg-green-500 text-white rounded-2xl hover:bg-green-600 transition"
+            onClick={() => navigate("/checkout")}
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
           >
             Checkout
           </button>

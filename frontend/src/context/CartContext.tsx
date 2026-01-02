@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useContext } from "react";
 
 export type CartItem = {
   id: number;
@@ -15,20 +15,26 @@ type CartContextType = {
   clearCart: () => void;
 };
 
-export const CartContext = createContext<CartContextType | undefined>(
-  undefined
-);
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [cart, setCart] = useState<CartItem[]>(() => {
-    const storedCart = localStorage.getItem("cart");
-    return storedCart ? JSON.parse(storedCart) : [];
+    try {
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
+    } catch {
+      return [];
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    try {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } catch {
+      // localStorage can fail in private mode
+    }
   }, [cart]);
 
   const addToCart = (item: CartItem) => {
@@ -37,7 +43,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       if (existing) {
         return prev.map((p) =>
           p.id === item.id
-            ? { ...p, quantity: p.quantity + item.quantity }
+            ? { ...p, quantity: Math.max(1, p.quantity + item.quantity) }
             : p
         );
       }
@@ -52,7 +58,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const clearCart = () => setCart([]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
